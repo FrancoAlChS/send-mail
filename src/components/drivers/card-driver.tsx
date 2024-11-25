@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,7 +12,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Driver } from "@/domain/entities/driver";
-import { Mail, Trash2 } from "lucide-react";
+import { Mail } from "lucide-react";
+import { ButtonDelete } from "./button-delete";
 import { ButtonEdit } from "./button-edit";
 
 interface Props {
@@ -47,13 +47,7 @@ export function CardDriver({ driver }: Props) {
       </CardContent>
       <CardFooter className="justify-end gap-2 py-3">
         <ButtonEdit driver={driver} />
-        <Button
-          size="icon"
-          variant="outline"
-          className="border-red-500 text-red-500 hover:text-red-600 hover:bg-red-50"
-        >
-          <Trash2 className="size-4" />
-        </Button>
+        <ButtonDelete driver={driver} />
       </CardFooter>
     </Card>
   );
