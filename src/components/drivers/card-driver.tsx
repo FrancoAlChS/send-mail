@@ -13,7 +13,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Driver } from "@/domain/entities/driver";
-import { FilePenLine, Mail, Trash2 } from "lucide-react";
+import { Mail, Trash2 } from "lucide-react";
+import { ButtonEdit } from "./button-edit";
 
 interface Props {
   driver: Driver;
@@ -45,13 +46,7 @@ export function CardDriver({ driver }: Props) {
         </p>
       </CardContent>
       <CardFooter className="justify-end gap-2 py-3">
-        <Button
-          size="icon"
-          variant="outline"
-          className="border-blue-500 text-blue-500 hover:text-blue-600 hover:bg-blue-50"
-        >
-          <FilePenLine className="size-4" />
-        </Button>
+        <ButtonEdit driver={driver} />
         <Button
           size="icon"
           variant="outline"

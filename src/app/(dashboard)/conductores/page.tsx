@@ -1,12 +1,16 @@
 import { Header } from "@/components/dashboard/header";
+import { ButtonCreate } from "@/components/drivers/button-create";
 import { CardDriver } from "@/components/drivers/card-driver";
+import { DialogCreateDriver } from "@/components/drivers/dialog-create-driver";
+import { driverSchema } from "@/components/drivers/driver-schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Search } from "lucide-react";
+import { FormModal } from "@/context/form-model-context";
+import { Search } from "lucide-react";
 
 export default function page() {
   return (
-    <>
+    <FormModal schema={driverSchema} defaultValues={{ name: "", email: "" }}>
       <Header title="Conductores" />
       <section className="mt-4 w-full">
         <div className="flex flex-wrap gap-2">
@@ -18,10 +22,7 @@ export default function page() {
             <Search />
             Buscar
           </Button>
-          <Button variant="secondary">
-            <Plus />
-            Nuevo
-          </Button>
+          <ButtonCreate />
         </div>
         <div className="mt-4 grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
           <CardDriver
@@ -34,6 +35,7 @@ export default function page() {
           />
         </div>
       </section>
-    </>
+      <DialogCreateDriver />
+    </FormModal>
   );
 }
