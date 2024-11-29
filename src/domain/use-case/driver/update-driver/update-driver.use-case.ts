@@ -14,7 +14,10 @@ export class UpdateDriver {
     if (driverDTO.email && driver.email !== driverDTO.email)
       driver.email = driverDTO.email;
 
-    if (driverDTO.isActive && driver.isActive !== driverDTO.isActive)
+    if (
+      typeof driverDTO.isActive === "boolean" &&
+      driver.isActive !== driverDTO.isActive
+    )
       driver.isActive = driverDTO.isActive;
 
     await this.driverRepository.update(driver);
