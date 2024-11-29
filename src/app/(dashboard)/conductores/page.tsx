@@ -6,9 +6,21 @@ import { driverSchema } from "@/components/drivers/driver-schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FormModal } from "@/context/form-model-context";
+import { findDrivers } from "@/services/driver/driver.services";
 import { Search } from "lucide-react";
 
-export default function page() {
+interface Props {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+
+export default async function page({ searchParams }: Props) {
+  const sp = await searchParams;
+  const page = sp.page ? Number(sp.page) : 1;
+  const limit = sp.limit ? Number(sp.limit) : 10;
+  const filter = sp.filter ? sp.filter : "";
+
+  const listDrivers = await findDrivers({ page: page, limit }, filter);
+
   return (
     <FormModal schema={driverSchema} defaultValues={{ name: "", email: "" }}>
       <Header title="Conductores" />
@@ -25,14 +37,17 @@ export default function page() {
           <ButtonCreate />
         </div>
         <div className="mt-4 grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
-          <CardDriver
-            driver={{
-              id: "1",
-              email: "chipanasiguas@gmail.com",
-              name: "Franco Chipana",
-              isActive: true,
-            }}
-          />
+          {listDrivers.map((driver) => (
+            <CardDriver
+              key={`driver-${driver.id}`}
+              driver={{
+                id: driver.id,
+                email: driver.email,
+                name: driver.name,
+                isActive: driver.isActive,
+              }}
+            />
+          ))}
         </div>
       </section>
       <DialogCreateDriver />
