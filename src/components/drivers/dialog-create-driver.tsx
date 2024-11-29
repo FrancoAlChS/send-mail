@@ -1,5 +1,8 @@
 "use client";
 import { useFormModal } from "@/context/form-model-context";
+import { createDriver } from "@/services/driver/driver.services";
+import { useRouter } from "next/navigation";
+import z from "zod";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -30,12 +33,22 @@ export function DialogCreateDriver() {
   const { form, open, mode, onOpenChange } =
     useFormModal<typeof driverSchema>();
 
-  function onSubmit() {
-    if (mode === "create") {
-      console.log("Registrando conductor");
-    } else {
-      console.log("Actualizando conductor");
-    }
+  const router = useRouter();
+
+  async function onSubmit(data: z.infer<typeof driverSchema>) {
+    try {
+      if (mode === "create") {
+        await createDriver({
+          email: data.email,
+          name: data.name,
+          isActive: data.state === "ACTIVO",
+        });
+      } else {
+        console.log("Actualizando conductor");
+      }
+      onOpenChange();
+      router.refresh();
+    } catch {}
   }
 
   return (
