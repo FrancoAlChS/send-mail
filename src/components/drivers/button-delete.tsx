@@ -1,6 +1,8 @@
 "use client";
 import { Driver } from "@/domain/entities/driver";
+import { deleteDriver } from "@/services/driver/driver.services";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,8 +21,11 @@ interface Props {
 }
 
 export function ButtonDelete({ driver }: Props) {
-  function deleteDriver() {
-    console.log("Se elimino al conductor");
+  const router = useRouter();
+
+  async function handleClick() {
+    await deleteDriver(driver.id);
+    router.refresh();
   }
 
   return (
@@ -42,8 +47,8 @@ export function ButtonDelete({ driver }: Props) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteDriver}>Continue</AlertDialogAction>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={handleClick}>Aceptar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
