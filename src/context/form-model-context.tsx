@@ -6,6 +6,7 @@ import { useForm, UseFormProps, UseFormReturn } from "react-hook-form";
 import z, { ZodType } from "zod";
 
 interface Context<T extends ZodType<any, any, any>> {
+  id: string;
   mode: "create" | "update";
   form: UseFormReturn<z.TypeOf<T>, any, undefined>;
   edit: (data: UseFormProps<z.infer<T>>["defaultValues"]) => void;
@@ -15,6 +16,7 @@ interface Context<T extends ZodType<any, any, any>> {
 }
 
 export const FormModalContext = createContext<Context<any>>({
+  id: "",
   mode: "create",
   form: {} as UseFormReturn<z.TypeOf<any>, any, undefined>,
   edit: () => null,
@@ -44,6 +46,7 @@ export const FormModal = <T extends ZodType<any, any, any>>({
   schema,
 }: Props<T>) => {
   const [open, setOpen] = useState(false);
+  const [id, setId] = useState("");
   const [mode, setMode] = useState<"create" | "update">("create");
   const form = useForm<typeof schema>({
     resolver: zodResolver(schema),
@@ -55,12 +58,14 @@ export const FormModal = <T extends ZodType<any, any, any>>({
   }
 
   function edit(data: any) {
+    setId(data.id);
     setMode("update");
     form.reset(data);
     onOpenChange();
   }
 
   function create() {
+    setId("");
     setMode("create");
     onOpenChange();
     form.reset(defaultValues as any);
@@ -69,6 +74,7 @@ export const FormModal = <T extends ZodType<any, any, any>>({
   return (
     <FormModalContext.Provider
       value={{
+        id,
         mode,
         form,
         edit,
