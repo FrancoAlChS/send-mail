@@ -5,6 +5,6 @@ export class ListDriver {
   constructor(private driverRepository: DriverRepository) {}
 
   async execute(pagination: Pagination, filter?: string) {
-    return await this.driverRepository.list(pagination, filter);
+    return await this.driverRepository.find(pagination, filter);
   }
 }
