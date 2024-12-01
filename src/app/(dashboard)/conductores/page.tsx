@@ -15,9 +15,12 @@ interface Props {
 export default async function page({ searchParams }: Props) {
   const sp = await searchParams;
   const page = sp.page ? Number(sp.page) : 1;
-  const limit = sp.limit ? Number(sp.limit) : 20;
+  const limit = sp.limit ? Number(sp.limit) : 15;
   const filter = sp.filter ? sp.filter : "";
-  const listDrivers = await findDrivers({ page: page, limit }, filter);
+  const { drivers, totalPage } = await findDrivers(
+    { page: page, limit },
+    filter
+  );
 
   return (
     <FormModal schema={driverSchema} defaultValues={{ name: "", email: "" }}>
@@ -28,7 +31,7 @@ export default async function page({ searchParams }: Props) {
           <ButtonCreate />
         </div>
         <div className="my-4 grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {listDrivers.map((driver) => (
+          {drivers.map((driver) => (
             <CardDriver
               key={`driver-${driver.id}`}
               driver={{
@@ -40,7 +43,7 @@ export default async function page({ searchParams }: Props) {
             />
           ))}
         </div>
-        <Pagination page={page} totalPages={2} />
+        <Pagination page={page} totalPages={totalPage} />
       </section>
       <DialogCreateDriver />
     </FormModal>

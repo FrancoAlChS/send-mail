@@ -5,6 +5,10 @@ import prisma from "@/lib/prisma";
 import { DriverMapper } from "../mappers/driver.mapper";
 
 export class DriverRepositoryImpl implements DriverRepository {
+  async getTotalDriver(): Promise<number> {
+    return await prisma.driver.count();
+  }
+
   async find(pagination: Pagination, filter?: string): Promise<Driver[]> {
     const skip =
       pagination.page <= 1 ? 0 : (pagination.page - 1) * pagination.limit;

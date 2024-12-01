@@ -5,6 +5,14 @@ export class ListDriver {
   constructor(private driverRepository: DriverRepository) {}
 
   async execute(pagination: Pagination, filter?: string) {
-    return await this.driverRepository.find(pagination, filter);
+    const [totalDriver, drivers] = await Promise.all([
+      this.driverRepository.getTotalDriver(),
+      this.driverRepository.find(pagination, filter),
+    ]);
+
+    return {
+      drivers,
+      totalPage: Math.ceil(totalDriver / pagination.limit),
+    };
   }
 }
